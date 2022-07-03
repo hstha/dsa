@@ -8,3 +8,112 @@
 | Single linked list | Doubly linked list |
 | ------------------ | ----- |
 | A node has one pointer which is connected to its next node | A node has two pointers which are connected to its previous and next nodes |
+
+## Operation
+1. Push
+- Adding a new node to the end of the Linked List!
+
+```js
+// Syntax
+/*
+  - Create a new node with the value passed to the function
+  - If the head property is null set th head and tail to be the newly created node
+  - If not, set the next property on the tail to be that node
+  - Set the previous property on the newly created node to be the tail
+  - Set the tail to be the newly created node
+  - Increment the length by one
+  - Return the linked list
+*/
+```
+
+```ts
+/**
+ * Class contains of leaf of node of singly linked list
+ */
+class ListNode<T> {
+  public value: T;
+  public next: ListNode<T>;
+  public prev: ListNode<T>;
+
+  constructor(value: T) {
+    this.value = value;
+    this.next = null;
+    this.prev = null;
+  }
+}
+
+/**
+ * Class containing operation related to singly linked list
+ */
+class SinglyLinkedList<T> {
+  private head: ListNode<T>;
+  private tail: ListNode<T>;
+  public length: number;
+
+  constructor() {
+    this.head = this.tail = null;
+    this.length = 0;
+  }
+
+  /**
+   * Checks if the list is empty or not
+   */
+  public get isEmpty() {
+    return this.length === 0;
+  }
+
+  /**
+   * Increase the length of list
+   */
+  private increaseLength = () => this.length++;
+
+  /**
+   * Sets the tracker of the list
+   * @param {ListNode<T>} head - Head property of the list
+   * @param {ListNode<T>} tail - Tail property of the list
+   */
+  private setListTracker = (tacker: {
+    head?: ListNode<T>;
+    tail?: ListNode<T>;
+  }) => {
+    const { head, tail } = tacker;
+
+    if (head !== undefined) {
+      this.head = head;
+    }
+
+    if (tail !== undefined) {
+      this.tail = tail;
+    }
+  };
+
+  private setNextNode = (nextNode: ListNode<T>) => {
+    this.tail.next = nextNode;
+    nextNode.prev = this.tail;
+    this.setListTracker({
+      tail: nextNode
+    });
+  }
+
+  /**
+   * Pushes the value at end of the list
+   * @param {T} value - Value that needs to be pushed in the list
+   * @returns {SinglyLinkedList<T>} - Instance of the SinglyLinkedList class
+   */
+  public push = (value: T) => {
+    const newNode = new ListNode(value);
+
+    if (this.isEmpty) {
+      this.setListTracker({ head: newNode, tail: newNode });
+
+      return this;
+    }
+    this.increaseLength();
+
+    this.setNextNode(newNode);
+
+    return this;
+  };
+}
+
+```
