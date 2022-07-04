@@ -9,6 +9,9 @@
 | ------------------ | ----- |
 | A node has one pointer which is connected to its next node | A node has two pointers which are connected to its previous and next nodes |
 
+d828345
+61b448a
+
 ## Operation
 1. Push
 - Adding a new node to the end of the Linked List!
@@ -23,6 +26,22 @@
   - Set the tail to be the newly created node
   - Increment the length by one
   - Return the linked list
+*/
+```
+
+2. Pop
+- Removing the node from the end of the linked list
+
+```js
+// Syntax
+/*
+  - If there is no head, return undefined
+  - Store the current tail in a variable to return later
+  - If the length is 1, set the head and tail to be null
+  - Update the tail to be the previous node
+  - Set the new tail's next to null
+  - Decrement the length
+  - Return the value removed
 */
 ```
 
@@ -113,6 +132,28 @@ class SinglyLinkedList<T> {
     this.setNextNode(newNode);
 
     return this;
+  };
+
+  /**
+   * Removes the last value from the list
+   * @returns {ListNode<T>} - Removed value from the list if exists
+   */
+  public pop = () => {
+    if (this.isEmpty) return null;
+
+    this.decreaseLength();
+    const temp = this.tail;
+
+    if(this.tail.prev === null) {
+      this.setListTracker({ head: null, tail: null });
+      return temp;
+    }
+
+    this.tail = temp.prev;
+    this.tail.next = null;
+    temp.prev = null;
+
+    return temp;
   };
 }
 
