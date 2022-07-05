@@ -45,6 +45,25 @@ d828345
 */
 ```
 
+3. Shift
+- Add node to start of the linked list
+
+```js
+// Syntax
+/*
+  - If length is 0, return undefined
+  - Store the current head property in a variable (we'll call it old head)
+  - If the length is noe
+    - set the head to be null
+    - set the tail to be null
+  - Update the head to be the next of the old head
+  - Set the head's prev property to null
+  - Set the old head's next to null
+  - Decrement the length
+  - Return old head
+*/
+```
+
 ```ts
 /**
  * Class contains of leaf of node of singly linked list
@@ -154,6 +173,27 @@ class SinglyLinkedList<T> {
     temp.prev = null;
 
     return temp;
+  };
+
+  /**
+   * Removes starting node of the list
+   * @returns {ListNode<T>} - Removed value from the list if exists
+   */
+  public shift = () => {
+    if (this.isEmpty) return undefined;
+
+    const oldHead = this.head;
+    
+    if (this.length === 1) {
+      this.setListTracker({ tail: null });
+      return oldHead;
+    }
+
+    this.head = oldHead.next;
+    this.head.prev = null;
+    oldHead.next = null;
+    this.decreaseLength();
+    return oldHead;
   };
 }
 
