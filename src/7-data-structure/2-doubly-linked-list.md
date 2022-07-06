@@ -64,6 +64,25 @@ d828345
 */
 ```
 
+4. Unshift
+- Added new node to the beginning of the linked list.
+
+```js
+// Syntax
+/*
+  - Create a new node with the value passed to the function
+  - If the length is 0
+    - set the head to be the new node
+    - set the tail to be the new node
+  - Otherwise
+    - set the prev property on the head of the list to be the new node
+    - set the next property on the new node to be the head property
+    - update the head to be the new node
+  - Increment the length
+  - Return the list
+*/
+```
+
 ```ts
 /**
  * Class contains of leaf of node of singly linked list
@@ -194,6 +213,26 @@ class SinglyLinkedList<T> {
     oldHead.next = null;
     this.decreaseLength();
     return oldHead;
+  };
+
+  /**
+   * Inserts node in the start of the list
+   * @param {T} value - Value that is to be inserted
+   * @returns {SinglyLinkedList<T>} - Instance of the SinglyLinkedList class
+   */
+  public unshift = (value: T) => {
+    const newNode = new ListNode(value);
+
+    if (this.isEmpty) {
+      this.setListTracker({ head: newNode, tail: newNode });
+      return this;
+    }
+    this.increaseLength();
+    this.head.prev = newNode;
+    newNode.next = this.head;
+    this.setListTracker({ head: newNode });
+
+    return this;
   };
 }
 
