@@ -83,6 +83,22 @@ d828345
 */
 ```
 
+5. Get
+- Get the index value from the linked list
+
+```js
+// Syntax
+/*
+  - If the index is less than 0 or greater or equal to the length, return null
+  - If the index is less than or equal to half the length of the list
+    - loop through the list starting from the head and loop towards the middle
+    - return the node once it is found
+  - If the index is greater than half the length of the list
+    - loop through the list starting from the tail and loop towards the middle
+    - return the node once it is found
+*/
+```
+
 ```ts
 /**
  * Class contains of leaf of node of singly linked list
@@ -233,6 +249,39 @@ class SinglyLinkedList<T> {
     this.setListTracker({ head: newNode });
 
     return this;
+  };
+
+  /**
+   * Gets the node from the list of particular index if exist
+   * @param {number} index - Index from where the node is to be taken
+   * @returns {ListNode<T>} - Node of the list if exist
+   */
+  public getValue = (index: number) => {
+    if (this.isEmpty || index < 0 || index >= this.length) return null;
+
+    let count, currentNode;
+
+    if(index <= this.length / 2) {
+      // Working from start
+      counter = 0;
+      currentNode = this.head;
+      while (counter != index) {
+        currentNode = currentNode.next;
+        counter++;
+      }
+  
+      return currentNode;
+    }
+
+    // Working from start
+    count = this.length - 1;
+    currentNode = this.tail;
+    while(count !== index) {
+      currentNode = currentNode.prev;
+      count--;
+    }
+
+    return currentNode;
   };
 }
 
