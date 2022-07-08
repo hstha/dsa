@@ -99,6 +99,19 @@ d828345
 */
 ```
 
+6. Set
+- Set the value of the node of the given index if exist
+
+```js
+// Syntax
+/*
+  - Create a variable which is the result of the get method at the index passed to the function
+    - if the get method returns a valid node, set the value of the node to be the value passed to the function
+    - return true
+  - Otherwise, return false
+*/
+```
+
 ```ts
 /**
  * Class contains of leaf of node of singly linked list
@@ -282,6 +295,24 @@ class SinglyLinkedList<T> {
     }
 
     return currentNode;
+  };
+
+  /**
+   * Sets the value in specific index of the list
+   * @param {T} value - Value which is to be set
+   * @param {number} index - Index number where value of the node is to be set
+   * @returns {boolean} - Boolean value the determines if the is set or not
+   */
+  public setValue = (value: T, index: number) => {
+    const foundNode = this.getValue(index);
+
+    if (foundNode) {
+      foundNode.value = value;
+
+      return true;
+    }
+
+    return false;
   };
 }
 
