@@ -112,6 +112,22 @@ d828345
 */
 ```
 
+7. Insert
+- Insert the node the the specific index
+
+```js
+// Syntax
+/*
+  - If the index is less than zero or greater than or equal to the length return false
+  - If the index is 0, unshift
+  - If the index is the same as the length, push
+  - Use the get method to access the index - 1
+  - Set the next and prev properties on the correct nodes to link everything together
+  - Increment the length
+  - Return true
+*/
+```
+
 ```ts
 /**
  * Class contains of leaf of node of singly linked list
@@ -313,6 +329,30 @@ class SinglyLinkedList<T> {
     }
 
     return false;
+  };
+
+  /**
+   * Inserts the value in specific index of the list
+   * @param {T} value - Value which is to be inserted
+   * @param {number} index - Index number where value of the node is to be inserted
+   * @returns {boolean} - Boolean value the determines if the is inserted or not
+   */
+  public insert = (value: T, index: number) => {
+    if (this.isEmpty || index < 0 || index > this.length) return false;
+    if (index === 0) return !!this.unshift(value);
+    if ((index = this.length)) return !!this.push(value);
+
+    const newNode = new ListNode(value);
+    const beforeNode = this.getValue(index - 1);
+    const afterNode = beforeNode.next;
+
+    beforeNode.next = newNode;
+    newNode.prev = beforeNode;
+    newNode.next = afterNode;
+    afterNode.prev = newNode;
+    this.increaseLength();
+
+    return true;
   };
 }
 
