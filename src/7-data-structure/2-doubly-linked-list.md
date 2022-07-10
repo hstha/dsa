@@ -128,6 +128,31 @@ d828345
 */
 ```
 
+8. Remove
+- Removed the node from the given index
+
+```js
+// Syntax
+/*
+  - If the index is less than zero or greater than or equal to the length return undefined
+  - If the index is 0, shift
+  - If the index is the same as the length - 1, pop
+  - Use the get method to retrieve the item to be removed
+  - Update the next and prev properties to remove the found node from the list
+  - Set next next and prev to null on the found node
+  - Decrement the length
+  - Return the removed node
+*/
+```
+
+## Big O
+| Operation | Time Complexity | Space Complexity |
+| --------- | --------------- | ---------------- |
+| Insertion | O(1) | O(1) |
+| Removal | O(1) | O(1) |
+| Searching | O(N) | O(N) |
+| Access | O(N) | O(N) |
+
 ```ts
 /**
  * Class contains of leaf of node of singly linked list
@@ -353,6 +378,31 @@ class SinglyLinkedList<T> {
     this.increaseLength();
 
     return true;
+  };
+
+  /**
+   * Removes the node of the given index from the list
+   * @param {number} index - Index value from where node is to be removed
+   * @returns {ListNode<T>} - Node which is removed if exist
+   */
+  public remove = (index: number) => {
+    if (index < 0 || index >= this.length) return undefined;
+    if (index === 0) return this.shift();
+    if (index === this.length - 1) return this.pop();
+
+    const removedNode = this.getValue(index - 1);
+    const beforeNode = removedNode.prev;
+    const afterNode = removedNode.next;
+
+    beforeNode.next = afterNode;
+    afterNode.prev = beforeNode;
+
+    removedNode.next = null;
+    removedNode.prev = null;
+
+    this.decreaseLength();
+
+    return removedNode;
   };
 }
 
