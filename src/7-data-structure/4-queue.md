@@ -50,7 +50,7 @@
 | Access | O(N) | O(N ) |
 
 ```ts
-class Stack<T> {
+class Queue<T> {
   private stack: SinglyLinkedList<T>;
 
   constructor() {
