@@ -73,7 +73,7 @@ class MaxBinaryHeap<T> {
     this.heap = [];
   }
 
-  insert(value: T) {
+  enque(value: T) {
     this.heap.push(value);
     this.bubbleUp();
 
@@ -144,3 +144,98 @@ class MaxBinaryHeap<T> {
 
 ### MinBinaryHeap:
 - In a **MinBinaryHeap**, parent nodes are always smaller than child nodes.
+
+## Priority Queue
+- A data structure where each element has a priority associated with it. 
+- Elements with higher priorities are served before elements with lower priorities.
+- It is just a concept, not necessarily implement with heap. But using heap is more efficient than other
+
+```ts
+class Node<T> {
+  value: T;
+  priority: number;
+
+  constructor(value: T, priority: number = 5) {
+    this.value = value;
+    this.priority = priority;
+  }
+}
+
+/*Implemented using minimum binary heap*/
+class PriorityQueue<T> {
+  heap: T[];
+  
+  constructor() {
+    this.heap = [];
+  }
+
+  enqueue(value: T, priority: number) {
+    const newNode = new Node(value, priority);
+    this.heap.push(newNode);
+    this.bubbleUp();
+
+    return this;
+  }
+
+  bubbleUp() {
+    let index = this.heap.length - 1;
+    const element = this.heap[index];
+
+    while(index > 0) {
+      let parentIndex = Math.floor((index - 1) / 2);
+      let parent = this.heap[parentIndex];
+      if(element.priority >= parent.priority) break;
+      this.heap[parentIndex] = element;
+      this.heap[index] = parent;
+      index = parentIndex;
+    }
+  }
+
+  dequeue() {
+    const min = this.heap[0];
+    const end = this.heap.pop();
+
+    if(this.heap.length === 0) return min;
+
+    this.heap[0] = end;
+    this.sinkDown();
+
+    return min;
+  }
+
+  sinkDown() {
+    let index = 0;
+    const length = this.heap.length;
+    const element = this.heap[0];
+    while(true) {
+      let leftChildIndex = 2 * index + 1;
+      let rightChildIndex = 2 * index + 2;
+      let leftChild, rightChild;
+      let swap = null;
+
+      if(leftChildIndex < length) {
+        leftChild = this.heap[leftChildIndex];
+        if(leftChild.priority > element.priority) {
+          swap = leftChildIndex;
+        }
+      }
+
+      if(rightChildIndex < length) {
+        rightChild = this.heap[rightChildIndex];
+        if(
+          (swap === null && rightChild.priority < element.priority) || 
+          (swap !== null && rightChild.priority < leftChild.priority)
+        ) {
+          swap = rightChildIndex;
+        }
+      }
+
+      if(swap === null) break;
+      this.heap[index] = this.heap[swap];
+      this.heap[swap] = element;
+
+      index = swap;
+    }
+  }
+}
+```
