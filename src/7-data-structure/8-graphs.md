@@ -288,3 +288,116 @@ function breadthFirst<T>(start_vertex: T) {
 }
 ```
 
+## Dijkstra's Algorithm
+- Finds the shortest path between two vertices on a graph.
+
+### Why it is important?
+- It is used in various application like
+  - GPS - `finding fastest route`
+  - Network Routing - `finds open shortest path for data`
+  - Biology - `used to model the spread of viruses among humans`
+  - Airline tickets - `finding cheapest route to your destination`
+  - Many other uses!
+
+### Approach
+- Every time we look to visit a new node, we pick the node with the smallest known distance to visit first.
+- Once we've moved to the node we're going to visit, we look at each of its neighbors
+- For each neighboring node, we calculate the distance by summing the total edges that lead to the node we're checking from the starting node.
+- If the new total distance to a node is less than the previous total, we store the new shorter distance for that node.
+
+```js
+// Syntax
+/*
+  - Create a function should accept a starting and ending vertex
+  - Create an object (we'll call it distances) and set each key to be every vertex in the adjacency list with a value of infinity, except for the starting vertex which should have a value of 0
+  - After setting a value in the distances object, add ech vertex with a priority of infinity to the priority queue, except the starting vertex, which should have a priority of 0 because that's where we begin
+  - Create another object called previous and set each key to be every vertex in the adjacency list with a value of null
+  - Start looping as long as there is anything in the priority queue
+    - dequeue a vertex from the priority queue
+    - If that vertex is the same as the ending vertex, we are done
+    - Otherwise loop through each value in the adjacency list at that vertex
+      - Calculate the distance to that vertex from the starting vertex
+      - If the distance is less than what is currently stored in our distances object
+        - update the distances object with new lower distance
+        - update the previous object to contain that vertex
+        - enqueue the vertex with the total distance from the start node
+*/
+```
+
+```ts
+class WeightedGraph<T> {
+  adjacencyList: any{};
+
+  constructor() {
+    this.adjacencyList = {};
+  }
+
+  getVertexEdges(vertex: T) {
+    return this.adjacencyList[vertex];
+  }
+
+  addVertex(vertex: T) {
+    if(!this.getVertexEdge(vertex)) this.adjacencyList[vertex] = [];
+  }
+
+  addEdge(vertex1: T, vertex2: T, weight: number) {
+    this.adjacencyList[vertex1].push({node: vertex2, weight});
+    this.adjacencyList[vertex2].push({node: vertex1, weight});
+  }
+}
+
+function dijkstra<T>(start: T, finish: T, graph: WeightedGraph<T>) {
+  const nodes = new PriorityQueue<T>();
+  const distances = {};
+  const previous = {};
+  let path: T[] = [];
+  let smallest: T; 
+
+  // build up initial state 
+  for(let vertex in this.adjacencyList) {
+    if(vertex === start) {
+      distance[vertex] = 0;
+      nodes.enqueue(vertex, 0);
+    } else {
+      distances[vertex] = Infinity;
+      nodes.enqueue(vertex, Infinity);
+    }
+
+    previous[vertex] = null;
+  }
+
+  // as long as there is something to visit
+  while(nodes.heap.length) {
+    smallest = nodes.dequeue();
+
+    if(smallest === finish) {
+      // we ar done
+      // build up path to return at end
+      while(previous[smallest]) {
+         .push(smallest);
+        smallest = previous[smallest];
+      }
+      break;
+    } else if(smallest || distances[smallest] !== Infinity) {
+      for(let neighbor in graph.adjacencyList[smallest]) {
+        // find neighboring node
+        let nextNode = graph.adjacencyList[smallest][neighbor];
+
+        // calculate new distance to neighboring node
+        let candidate = distance[smallest] + nextNode.weight;
+        let nextNeighbor = nextNode.node;
+        if(candidate < distance[nextNeighbor]) {
+          // updating new smallest distance to neighbor
+          distance[nextNeighbor] = candidate;
+          // updating previous - How we got to neighbor
+          previous[nextNeighbor] = smallest;
+          // enqueue in priority queue with new priority
+          nodes.enqueue(nextNeighbor, candidate);
+        }
+      }
+    }
+  }
+
+  return path.concat(smallest).reverse();
+}
+```
